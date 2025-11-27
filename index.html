@@ -1,90 +1,330 @@
-<!doctype html>
+  <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Radionic Shop</title>
-<meta name="description" content="Premium electronics repair and services in California, USA. Reliable, fast and trusted.">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>WebForge — Super Premium Generator</title>
+<meta name="description" content="Instant website generator — create a polished site and download the HTML.">
 <style>
-  body{font-family: Inter, system-ui, -apple-system, Roboto, Arial; margin:0; color:#0f1724; background:#f7f7f7}
-  header{background:#0ea5e9;color:#fff;padding:32px 0;border-bottom-left-radius:20px;border-bottom-right-radius:20px}
-  .wrap{max-width:1000px;margin:0 auto;padding:20px}
-  h1{margin:0;font-size:30px}
-  p.lead{margin:10px 0 0;opacity:.95;font-size:16px}
-  .section{background:#fff;border-radius:14px;padding:22px;margin-top:20px;box-shadow:0 5px 18px rgba(0,0,0,0.06)}
-  .grid{display:flex;gap:20px;flex-wrap:wrap}
-  .col{flex:1;min-width:250px}
-  ul{padding-left:20px}
-  footer{margin-top:30px;padding:12px;text-align:center;color:#6b7280}
-  @media(max-width:720px){
-    header{padding:26px 0}
-    h1{font-size:24px}
-    .grid{flex-direction:column}
+  :root{
+    --bg:#f7f8fb; --card:#ffffff; --muted:#6b7280; --text:#0f1724;
+    --accent:#6f44ff; --accent-2:#0f62fe; --radius:14px; --shadow:0 10px 30px rgba(15,23,36,0.08);
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;padding:22px}
+  .wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start}
+  header{grid-column:1/-1;display:flex;gap:14px;align-items:center;margin-bottom:6px}
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+  h1{font-size:20px;margin:0}
+  p.lead{margin:2px 0 0;color:var(--muted);font-size:13px}
+
+  /* Left column */
+  .panel{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+  label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}
+  input[type="text"], input[type="email"], textarea, select{
+    width:100%;padding:12px;border-radius:10px;border:1px solid #e6e9ef;font-size:15px;background:#fff;
+  }
+  textarea{min-height:90px;resize:vertical}
+  .row{display:flex;gap:12px}
+  .col{flex:1;min-width:0}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:0;color:white;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+  .btn.ghost{background:#fff;border:1px solid #e6e9ef;color:var(--text);font-weight:600}
+  .muted{color:var(--muted);font-size:13px;margin-top:8px}
+  small.hint{color:var(--muted);display:block;margin-top:6px}
+
+  /* Right column preview */
+  .preview-wrap{display:flex;flex-direction:column;gap:12px}
+  .preview-card{height:640px;border-radius:12px;overflow:hidden;border:1px solid #eee;background:#fff}
+  iframe.preview{width:100%;height:100%;border:0;display:block}
+
+  /* footer */
+  footer{grid-column:1/-1;margin-top:10px;color:var(--muted);font-size:13px;text-align:center}
+
+  /* responsive */
+  @media (max-width:980px){
+    .wrap{grid-template-columns:1fr; padding-bottom:120px}
+    .preview-card{height:520px}
   }
 </style>
 </head>
-
 <body>
-
-<header>
   <div class="wrap">
-    <h1>Radionic Shop</h1>
-    <p class="lead">Premium electronics repair & services in California, USA — Trusted by thousands.</p>
+    <header>
+      <div class="brand">
+        <div class="logo">WF</div>
+        <div>
+          <h1>WebForge — Super Premium</h1>
+          <p class="lead">Generate a polished single-page site — enter business name, email, phone, address, description and download ready HTML.</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- left: inputs -->
+    <div class="panel">
+      <label for="bizName">Business name</label>
+      <input id="bizName" type="text" placeholder="e.g. Radionic Shop">
+
+      <div style="height:10px"></div>
+      <label for="desc">Short description / tagline</label>
+      <input id="desc" type="text" placeholder="e.g. Premium electronics repair & services">
+
+      <div style="height:10px"></div>
+      <label for="email">Contact email (visible on site)</label>
+      <input id="email" type="email" placeholder="hello@example.com">
+
+      <div style="height:10px"></div>
+      <label for="phone">Phone number (visible on site)</label>
+      <input id="phone" type="text" placeholder="+1 555 555 5555">
+
+      <div style="height:10px"></div>
+      <label for="address">Address / Location (free text)</label>
+      <input id="address" type="text" placeholder="Address, City, Country (leave empty if you want visitors to contact by email/phone only)">
+
+      <div style="height:10px"></div>
+      <label for="more">Longer About text (optional)</label>
+      <textarea id="more" placeholder="Describe services, opening hours, guarantees, etc."></textarea>
+
+      <div style="height:10px"></div>
+      <label for="style">Style preset</label>
+      <select id="style">
+        <option value="clean">Clean & Professional</option>
+        <option value="modern">Modern Gradient</option>
+        <option value="minimal">Minimal & Fast</option>
+      </select>
+
+      <div class="controls" style="margin-top:14px">
+        <button id="generate" class="btn">Generate</button>
+        <button id="copy" class="btn ghost">Copy HTML</button>
+        <button id="download" class="btn ghost">Download</button>
+        <button id="reset" class="btn ghost">Reset</button>
+      </div>
+
+      <div class="muted">No default country is included — address is blank until you or your user types it. The generated page includes contact links (tel: / mailto:).</div>
+      <div style="height:8px"></div>
+      <small class="hint">Tip: After generating, click Copy then paste into a new file `index.html` and push to GitHub Pages or open locally.</small>
+    </div>
+
+    <!-- right: preview -->
+    <div class="preview-wrap">
+      <div class="panel" style="padding:10px">
+        <strong>Live preview</strong>
+      </div>
+      <div class="preview-card">
+        <iframe id="preview" class="preview" sandbox="allow-same-origin allow-popups allow-forms"></iframe>
+      </div>
+    </div>
+
+    <footer>Built with ❤️ — WebForge Super Premium • Copy or Download the generated HTML to publish</footer>
   </div>
-</header>
 
-<div class="wrap">
+<script>
+  // Elements
+  const bizName = document.getElementById('bizName');
+  const desc = document.getElementById('desc');
+  const email = document.getElementById('email');
+  const phone = document.getElementById('phone');
+  const address = document.getElementById('address');
+  const more = document.getElementById('more');
+  const styleSel = document.getElementById('style');
+  const genBtn = document.getElementById('generate');
+  const copyBtn = document.getElementById('copy');
+  const dlBtn = document.getElementById('download');
+  const resetBtn = document.getElementById('reset');
+  const previewIframe = document.getElementById('preview');
 
-  <section class="section" id="about">
-    <h2>About Us</h2>
-    <p class="lead">At Radionic Shop, we specialize in repairing phones, laptops, TVs, stereos, and all electronic appliances with expert precision.</p>
-  </section>
+  // default sample (you can remove)
+  bizName.value = 'Radionic Shop';
+  desc.value = 'Premium electronics repair & services';
+  email.value = '';
+  phone.value = '';
+  address.value = '';
+  more.value = '';
 
-  <section class="section" id="services">
-    <h2>Services</h2>
-    <div class="grid">
-      <div class="col">
-        <ul>
-          <li style="margin-bottom:10px">Device Repair — Fast & affordable repair for all electronics.</li>
-          <li style="margin-bottom:10px">Accessories — High-quality chargers, cables, batteries & more.</li>
-          <li style="margin-bottom:10px">Home Delivery — Available for select areas in the US.</li>
-          <li style="margin-bottom:10px">Warranty Service — Peace of mind on every repair.</li>
-        </ul>
-      </div>
-      <div class="col">
-        <p><strong>Why Choose Us?</strong></p>
-        <p>Certified technicians • Fast turnaround • Excellent support</p>
+  // helpers
+  function escapeHtml(s){ return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+
+  function accentForStyle(s){
+    if(s === 'modern') return {accent1:'#6f44ff', accent2:'#0f62fe'};
+    if(s === 'minimal') return {accent1:'#111827', accent2:'#374151'};
+    return {accent1:'#0f62fe', accent2:'#6f44ff'};
+  }
+
+  function generateHTML(){
+    const data = {
+      biz: bizName.value.trim() || '',
+      desc: desc.value.trim() || '',
+      email: email.value.trim() || '',
+      phone: phone.value.trim() || '',
+      address: address.value.trim() || '',
+      more: more.value.trim() || '',
+      style: styleSel.value
+    };
+
+    const accent = accentForStyle(data.style);
+    const currentYear = new Date().getFullYear();
+
+    // build contact line with conditional pieces (no default country anywhere)
+    let contactLine = [];
+    if(data.phone) contactLine.push(`<a href="tel:${escapeHtml(data.phone)}">${escapeHtml(data.phone)}</a>`);
+    if(data.email) contactLine.push(`<a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a>`);
+    const contactHtml = contactLine.length ? contactLine.join(' · ') : '<span class="muted">Contact details not provided</span>';
+
+    const aboutText = data.more || (data.desc ? data.biz + ' — ' + data.desc : data.biz);
+
+    // Services sample (generic)
+    const services = [
+      'Device Repair — Fast, reliable repairs for phones, laptops, TVs.',
+      'Parts & Accessories — High-quality chargers, batteries & cables.',
+      'Warranty & Support — Peace of mind with every repair.',
+      'Home Pickup — Optional collection & delivery (where available).'
+    ];
+
+    // HTML template (single file)
+    const html = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>${escapeHtml(data.biz || 'Business')}</title>
+<meta name="description" content="${escapeHtml(data.desc || aboutText)}">
+<style>
+  :root{--accent1:${accent.accent1};--accent2:${accent.accent2};--bg:#fafafa;--card:#ffffff;--muted:#6b7280;--text:#0f1724}
+  *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Roboto,Arial;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+  .hero{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:white;padding:36px 18px;border-bottom-left-radius:22px;border-bottom-right-radius:22px}
+  .wrap{max-width:1000px;margin:0 auto;padding:18px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:56px;height:56px;border-radius:12px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-weight:800}
+  h1{margin:0;font-size:26px}
+  p.lead{margin:8px 0 0;opacity:0.95;font-size:15px}
+  .card{background:var(--card);border-radius:12px;padding:18px;margin-top:18px;box-shadow:0 8px 30px rgba(15,23,36,0.06)}
+  .grid{display:flex;gap:18px;flex-wrap:wrap}
+  .col{flex:1;min-width:220px}
+  ul{padding-left:18px}
+  a.cta{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:10px;background:white;color:var(--accent1);font-weight:700;text-decoration:none}
+  footer{margin-top:28px;padding:18px;text-align:center;color:var(--muted);font-size:14px}
+  .muted{color:var(--muted)}
+  @media (max-width:760px){h1{font-size:20px}.grid{flex-direction:column}}
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo">${escapeHtml((data.biz||'').slice(0,2).toUpperCase())}</div>
+        <div>
+          <h1>${escapeHtml(data.biz || 'Business Name')}</h1>
+          <p class="lead">${escapeHtml(data.desc || '')}</p>
+        </div>
       </div>
     </div>
-  </section>
+  </header>
 
-  <section class="section" id="products">
-    <h2>Popular Products</h2>
-    <div style="display:flex;gap:14px;flex-wrap:wrap">
-      <div style="flex:1;min-width:180px;border-radius:12px;padding:14px;border:1px solid #eee">
-        Phone Screen Protector<br><small>Premium quality</small>
+  <main class="wrap">
+    <section class="card" id="about">
+      <h2>About</h2>
+      <p>${escapeHtml(aboutText)}</p>
+      ${data.address ? `<p style="margin-top:10px"><strong>Location:</strong> ${escapeHtml(data.address)}</p>` : ''}
+    </section>
+
+    <section class="card" id="services">
+      <h2>Services</h2>
+      <div class="grid">
+        <div class="col">
+          <ul>
+            ${services.map(s => `<li style="margin-bottom:10px">${escapeHtml(s)}</li>`).join('')}
+          </ul>
+        </div>
+        <div class="col">
+          <p><strong>Why choose us?</strong></p>
+          <p>Experienced team · Trusted work · Great value</p>
+          <a class="cta" href="mailto:${escapeHtml(data.email || '')}">${data.email ? 'Email us' : 'Contact us'}</a>
+        </div>
       </div>
-      <div style="flex:1;min-width:180px;border-radius:12px;padding:14px;border:1px solid #eee">
-        Fast Charging Cable<br><small>USB-C / iPhone</small>
-      </div>
-      <div style="flex:1;min-width:180px;border-radius:12px;padding:14px;border:1px solid #eee">
-        Wireless Earbuds<br><small>Great sound</small>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section" id="contact">
-    <h2>Contact</h2>
-    <p>Phone: <a href="tel:+14085551234">+1 (408) 555-1234</a></p>
-    <p>Email: <a href="mailto:support@radionicshop.com">support@radionicshop.com</a></p>
-    <p>Address: 2120 Tech Avenue, San Jose, California, USA</p>
-  </section>
+    <section class="card" id="contact">
+      <h2>Contact</h2>
+      <p>${contactHtml}</p>
+      ${data.address ? `<p>Address: ${escapeHtml(data.address)}</p>` : ''}
+    </section>
 
-  <footer>
-    &copy; 2025 Radionic Shop • Powered by WebForge
-  </footer>
-
-</div>
-
+    <footer>&copy; ${new Date().getFullYear()} ${escapeHtml(data.biz || 'Business')} · Built with WebForge</footer>
+  </main>
 </body>
-  </html>
+</html>`;
+
+    return html;
+  }
+
+  // Update preview
+  function updatePreview(html){
+    const blob = new Blob([html], {type: 'text/html'});
+    const url = URL.createObjectURL(blob);
+    previewIframe.src = url;
+    // revoke after a minute
+    setTimeout(()=>URL.revokeObjectURL(url), 60000);
+  }
+
+  // generate button
+  genBtn.addEventListener('click', ()=>{
+    const html = generateHTML();
+    updatePreview(html);
+    // store on buttons
+    copyBtn.dataset.html = html;
+    dlBtn.dataset.html = html;
+  });
+
+  // copy HTML
+  copyBtn.addEventListener('click', async ()=>{
+    const html = copyBtn.dataset.html;
+    if(!html){ alert('Generate first.'); return; }
+    try{
+      await navigator.clipboard.writeText(html);
+      copyBtn.textContent = 'Copied ✓';
+      setTimeout(()=>copyBtn.textContent = 'Copy HTML', 1500);
+    }catch(e){
+      alert('Copy failed — please download instead.');
+    }
+  });
+
+  // download
+  dlBtn.addEventListener('click', ()=>{
+    const html = dlBtn.dataset.html;
+    if(!html){ alert('Generate first.'); return; }
+    const blob = new Blob([html], {type:'text/html'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    const fname = (bizName.value.trim() || 'site').toLowerCase().replace(/[^a-z0-9]+/gi,'-') || 'site';
+    a.download = fname + '.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    // revoke
+    setTimeout(()=>URL.revokeObjectURL(a.href), 5000);
+  });
+
+  // reset
+  resetBtn.addEventListener('click', ()=>{
+    if(!confirm('Reset inputs to blank?')) return;
+    bizName.value = '';
+    desc.value = '';
+    email.value = '';
+    phone.value = '';
+    address.value = '';
+    more.value = '';
+    styleSel.value = 'clean';
+    previewIframe.src = 'about:blank';
+    copyBtn.dataset.html = '';
+    dlBtn.dataset.html = '';
+  });
+
+  // initial blank preview
+  previewIframe.srcdoc = '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:Inter,system-ui,-apple-system,Roboto,Arial;color:#6b7280;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}p{padding:16px;text-align:center}</style></head><body><p>No preview yet — enter details and click Generate</p></body></html>';
+
+</script>
+</body>
+        </html>
