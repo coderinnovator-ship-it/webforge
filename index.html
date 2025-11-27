@@ -1,218 +1,43 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>WebForge — Instant Website Generator</title>
-  <style>
-    :root{
-      --bg:#ffffff; --panel:#ffffff; --muted:#6b7280; --accent:#0f62fe; --text:#0f1724;
-      --radius:12px; --shadow:0 6px 20px rgba(15,23,36,0.08);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-    }
-    *{box-sizing:border-box}
-    body{margin:0; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; padding:28px;}
-    .wrap{max-width:920px;margin:0 auto;}
-    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
-    .logo{background:linear-gradient(135deg,#0f62fe,#6f44ff);color:#fff;padding:10px 14px;border-radius:10px;font-weight:700}
-    h1{font-size:20px;margin:0}
-    p.lead{margin:6px 0 0;color:var(--muted);font-size:14px}
-    .card{background:var(--panel);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:16px}
-    label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}
-    .controls{display:flex;gap:8px;flex-wrap:wrap}
-    input[type="text"], textarea, select{
-      width:100%; padding:12px;border:1px solid #e6e9ef;border-radius:10px;font-size:15px;
-      outline:none;transition:all .15s;
-    }
-    textarea{min-height:92px; resize:vertical}
-    .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
-    .btn.ghost{background:#fff;border:1px solid #ddd;color:var(--text)}
-    .btn.small{padding:8px 10px;font-size:14px}
-    .row{display:flex;gap:12px}
-    .col{flex:1;min-width:0}
-    .preview{border-radius:10px;height:520px;overflow:auto;border:1px solid #eee;padding:0}
-    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .muted{color:var(--muted);font-size:13px}
-    footer{margin-top:20px;color:var(--muted);font-size:13px;text-align:center}
-    /* small screens */
-    @media (max-width:720px){
-      header{flex-direction:row;align-items:center}
-      .row{flex-direction:column}
-      .preview{height:520px}
-    }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <div class="logo">WebForge</div>
-      <div>
-        <h1>WebForge — Instant Website Generator</h1>
-        <p class="lead">Type what the business is and WebForge makes a clean website automatically. Try: "barber shop Lagos", "Italian restaurant", "portfolio photographer".</p>
-      </div>
-    </header>
-
-    <div class="card">
-      <label for="prompt">Describe the website (one line):</label>
-      <input id="prompt" placeholder="Example: Barber shop in Lagos that does haircuts & braids" value="">
-      <div style="height:8px"></div>
-      <label for="slug">Website title (optional):</label>
-      <input id="title" placeholder="Example: Lagos Barbers">
-      <div style="height:8px"></div>
-      <div class="row">
-        <div class="col">
-          <label for="style">Select style (preset):</label>
-          <select id="style">
-            <option value="professional">Clean & Professional</option>
-            <option value="minimal">Minimal & Fast</option>
-            <option value="modern">Modern SaaS</option>
-          </select>
-        </div>
-        <div style="width:160px">
-          <label>&nbsp;</label>
-          <div class="controls">
-            <button id="generate" class="btn">Generate</button>
-            <button id="download" class="btn ghost small">Download</button>
-            <button id="copy" class="btn ghost small">Copy</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="actions muted">Auto-detect works for — restaurants, barber, salon, store/e-commerce, portfolio, lawyer, mechanic, gym, school. If unknown, WebForge creates a simple multi-section site.</div>
-    </div>
-
-    <div class="card">
-      <label>Preview</label>
-      <div id="previewFrame" class="preview">
-        <!-- generated HTML will show here -->
-        <div style="padding:28px;color:var(--muted)">No preview yet. Type a description and click Generate.</div>
-      </div>
-    </div>
-
-    <div class="card muted">
-      <strong>How to use</strong>
-      <ul>
-        <li>Type what they want and click <strong>Generate</strong>.</li>
-        <li>Preview will show the generated website. Click <strong>Copy</strong> to copy the HTML or <strong>Download</strong> to save it as an HTML file.</li>
-      </ul>
-    </div>
-
-    <footer>Built with ❤️ by WebForge — Paste this file to your GitHub Pages repo to run WebForge for free.</footer>
-  </div>
-
-  <script>
-    // --- helpers
-    const promptEl = document.getElementById('prompt');
-    const titleEl = document.getElementById('title');
-    const styleEl = document.getElementById('style');
-    const preview = document.getElementById('previewFrame');
-    const genBtn = document.getElementById('generate');
-    const copyBtn = document.getElementById('copy');
-    const dlBtn = document.getElementById('download');
-
-    // detect industry from text with keywords
-    function detectIndustry(text){
-      const t = text.toLowerCase();
-      const map = [
-        {k:['barber','hair','salon','braid'],'v':'barber'},
-        {k:['restaurant','cafe','food','bistro','diner'],'v':'restaurant'},
-        {k:['store','shop','retail','ecommerce','online store','boutique'],'v':'store'},
-        {k:['portfolio','photograph','photographer','designer','artist'],'v':'portfolio'},
-        {k:['lawyer','attorney','law firm','advocate'],'v':'lawyer'},
-        {k:['gym','fitness','trainer','fitness studio'],'v':'gym'},
-        {k:['school','academy','tutoring','class'],'v':'school'},
-        {k:['mechanic','garage','auto','car repair'],'v':'mechanic'},
-        {k:['event','planner','wedding','party'],'v':'events'}
-      ];
-      for(const m of map){
-        for(const kw of m.k){
-          if(t.includes(kw)) return m.v;
-        }
-      }
-      return 'general';
-    }
-
-    // create service list from text by simple heuristics
-    function createServices(industry, text){
-      const base = [];
-      if(industry==='barber') base.push('Haircuts','Shaves','Braids & Styling','Kids Hair');
-      if(industry==='restaurant') base.push('Menu','Private Events','Online Orders','Catering');
-      if(industry==='store') base.push('Products','Shipping','Returns','Special Offers');
-      if(industry==='portfolio') base.push('Work Samples','About Me','Contact','Book a Session');
-      if(industry==='lawyer') base.push('Areas of Practice','Consultation','Case Studies','Contact');
-      if(industry==='gym') base.push('Classes','Personal Training','Membership','Timetable');
-      if(industry==='mechanic') base.push('Diagnostics','Repairs','Maintenance','Parts');
-      if(industry==='school') base.push('Programs','Admissions','Faculty','Contact');
-      if(industry==='events') base.push('Services','Past Events','Pricing','Contact');
-      if(base.length) return base;
-      // fallback: extract some nouns? simple defaults
-      return ['About','Services','Contact','Testimonials'];
-    }
-
-    // pick accent color by industry
-    function industryAccent(ind){
-      const colors = {
-        barber:'#ff6b6b', restaurant:'#f59e0b', store:'#10b981', portfolio:'#7c3aed', lawyer:'#0f1724',
-        gym:'#ef4444', mechanic:'#0284c7', school:'#3b82f6', events:'#f97316', general:'#0f62fe'
-      };
-      return colors[ind]||'#0f62fe';
-    }
-
-    // build full page HTML string
-    function buildWebsiteHTML(opts){
-      const {title,desc,industry,style} = opts;
-      const accent = industryAccent(industry);
-      const services = createServices(industry,desc);
-      const heroTitle = title || (industry==='barber' ? 'Professional Barber Shop' : (industry==='restaurant'? 'Delicious Food Served Fresh' : (industry==='portfolio'?'Creative Portfolio':'Welcome')));
-      const metaDesc = (desc||'').slice(0,150) || `${heroTitle} — generated by WebForge.`;
-
-      // gallery / products quick content
-      const galleryHtml = (industry==='store'||industry==='restaurant') ? `
-        <section id="products" style="padding:28px 18px;background:#fff">
-          <h3>Our Top Picks</h3>
-          <div style="display:flex;gap:12px;flex-wrap:wrap">
-            <div style="flex:1;min-width:160px;border-radius:10px;padding:12px;border:1px solid #eee">Sample Item<br><small class="muted">Description</small></div>
-            <div style="flex:1;min-width:160px;border-radius:10px;padding:12px;border:1px solid #eee">Sample Item<br><small class="muted">Description</small></div>
-            <div style="flex:1;min-width:160px;border-radius:10px;padding:12px;border:1px solid #eee">Sample Item<br><small class="muted">Description</small></div>
-          </div>
-        </section>` : '';
-
-      // build services HTML
-      const servicesHtml = services.map(s => `<li style="margin-bottom:8px">${s} — Short description about this service.</li>`).join('');
-
-      // minimal responsive CSS included inline
-      const page = `<!doctype html>
-<html lang="en">
-<head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>${escapeHtml(heroTitle)}</title>
-<meta name="description" content="${escapeHtml(metaDesc)}">
+<title>Radionic Shop</title>
+<meta name="description" content="Premium electronics repair and services in California, USA. Reliable, fast and trusted.">
 <style>
-  body{font-family: Inter, system-ui, -apple-system, Roboto, Arial; margin:0; color:#0f1724; background:#fafafa}
-  header{background:${accent};color:#fff;padding:28px;border-bottom-left-radius:18px;border-bottom-right-radius:18px}
+  body{font-family: Inter, system-ui, -apple-system, Roboto, Arial; margin:0; color:#0f1724; background:#f7f7f7}
+  header{background:#0ea5e9;color:#fff;padding:32px 0;border-bottom-left-radius:20px;border-bottom-right-radius:20px}
   .wrap{max-width:1000px;margin:0 auto;padding:20px}
-  h1{margin:0;font-size:28px}
-  p.lead{margin:8px 0 0;opacity:.95}
-  .section{background:#fff;border-radius:12px;padding:20px;margin-top:18px;box-shadow:0 6px 20px rgba(15,23,36,0.04)}
-  .grid{display:flex;gap:18px;flex-wrap:wrap}
-  .col{flex:1;min-width:240px}
-  ul{padding-left:18px}
-  footer{margin-top:28px;padding:12px;text-align:center;color:#6b7280}
-  @media(max-width:720px){header{padding:20px}h1{font-size:22px}.grid{flex-direction:column}}
+  h1{margin:0;font-size:30px}
+  p.lead{margin:10px 0 0;opacity:.95;font-size:16px}
+  .section{background:#fff;border-radius:14px;padding:22px;margin-top:20px;box-shadow:0 5px 18px rgba(0,0,0,0.06)}
+  .grid{display:flex;gap:20px;flex-wrap:wrap}
+  .col{flex:1;min-width:250px}
+  ul{padding-left:20px}
+  footer{margin-top:30px;padding:12px;text-align:center;color:#6b7280}
+  @media(max-width:720px){
+    header{padding:26px 0}
+    h1{font-size:24px}
+    .grid{flex-direction:column}
+  }
 </style>
 </head>
+
 <body>
+
 <header>
   <div class="wrap">
-    <h1>${escapeHtml(heroTitle)}</h1>
-    <p style="margin-top:8px">${escapeHtml(desc||'')}</p>
+    <h1>Radionic Shop</h1>
+    <p class="lead">Premium electronics repair & services in California, USA — Trusted by thousands.</p>
   </div>
 </header>
+
 <div class="wrap">
+
   <section class="section" id="about">
-    <h2>About</h2>
-    <p class="lead">${escapeHtml((desc || heroTitle) + ' — We provide excellent service and customer satisfaction.')}</p>
+    <h2>About Us</h2>
+    <p class="lead">At Radionic Shop, we specialize in repairing phones, laptops, TVs, stereos, and all electronic appliances with expert precision.</p>
   </section>
 
   <section class="section" id="services">
@@ -220,98 +45,46 @@
     <div class="grid">
       <div class="col">
         <ul>
-          ${servicesHtml}
+          <li style="margin-bottom:10px">Device Repair — Fast & affordable repair for all electronics.</li>
+          <li style="margin-bottom:10px">Accessories — High-quality chargers, cables, batteries & more.</li>
+          <li style="margin-bottom:10px">Home Delivery — Available for select areas in the US.</li>
+          <li style="margin-bottom:10px">Warranty Service — Peace of mind on every repair.</li>
         </ul>
       </div>
       <div class="col">
-        <p><strong>Why choose us?</strong></p>
-        <p>Experienced team · Trusted · Best value</p>
+        <p><strong>Why Choose Us?</strong></p>
+        <p>Certified technicians • Fast turnaround • Excellent support</p>
       </div>
     </div>
   </section>
 
-  ${galleryHtml}
+  <section class="section" id="products">
+    <h2>Popular Products</h2>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <div style="flex:1;min-width:180px;border-radius:12px;padding:14px;border:1px solid #eee">
+        Phone Screen Protector<br><small>Premium quality</small>
+      </div>
+      <div style="flex:1;min-width:180px;border-radius:12px;padding:14px;border:1px solid #eee">
+        Fast Charging Cable<br><small>USB-C / iPhone</small>
+      </div>
+      <div style="flex:1;min-width:180px;border-radius:12px;padding:14px;border:1px solid #eee">
+        Wireless Earbuds<br><small>Great sound</small>
+      </div>
+    </div>
+  </section>
 
   <section class="section" id="contact">
     <h2>Contact</h2>
-    <p>Phone: <a href="tel:+234800000000">+234 800 000 000</a> · Email: <a href="mailto:hello@example.com">hello@example.com</a></p>
-    <p>Address: Your local address here</p>
+    <p>Phone: <a href="tel:+14085551234">+1 (408) 555-1234</a></p>
+    <p>Email: <a href="mailto:support@radionicshop.com">support@radionicshop.com</a></p>
+    <p>Address: 2120 Tech Avenue, San Jose, California, USA</p>
   </section>
 
   <footer>
-    &copy; ${new Date().getFullYear()} ${escapeHtml(title||heroTitle)} · Built with WebForge
+    &copy; 2025 Radionic Shop • Powered by WebForge
   </footer>
+
 </div>
+
 </body>
-</html>`;
-      return page;
-    }
-
-    // safe small escape
-    function escapeHtml(s){
-      return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; });
-    }
-
-    // update preview area by setting innerHTML to iframe-like view
-    function updatePreview(html){
-      // create a blob url and set an iframe inside preview
-      const blob = new Blob([html], {type:'text/html'});
-      const url = URL.createObjectURL(blob);
-      preview.innerHTML = '<iframe src="'+url+'" style="width:100%;height:100%;border:0;border-radius:10px"></iframe>';
-      // revoke when unloaded
-      setTimeout(()=>URL.revokeObjectURL(url), 30000);
-    }
-
-    // generate button handler
-    genBtn.addEventListener('click', ()=>{
-      const desc = promptEl.value.trim();
-      if(!desc){ alert('Type a short description first. Example: "Barber shop in Lagos".'); promptEl.focus(); return; }
-      const title = (titleEl.value.trim()) || '';
-      const industry = detectIndustry(desc);
-      const style = styleEl.value;
-      const html = buildWebsiteHTML({title, desc, industry, style});
-      // set preview
-      updatePreview(html);
-      // prepare download link (store on element)
-      genBtn.dataset.html = html;
-      copyBtn.dataset.html = html;
-      dlBtn.dataset.html = html;
-    });
-
-    // copy to clipboard
-    copyBtn.addEventListener('click', async ()=>{
-      const html = copyBtn.dataset.html;
-      if(!html){ alert('Generate first.'); return; }
-      try{
-        await navigator.clipboard.writeText(html);
-        copyBtn.textContent='Copied!';
-        setTimeout(()=>copyBtn.textContent='Copy',1500);
-      }catch(e){
-        alert('Copy failed. You can Download the file instead.');
-      }
-    });
-
-    // download file
-    dlBtn.addEventListener('click', ()=>{
-      const html = dlBtn.dataset.html;
-      if(!html){ alert('Generate first.'); return; }
-      const blob = new Blob([html], {type:'text/html'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      const fname = (titleEl.value.trim()||'site').toLowerCase().replace(/\s+/g,'-') || 'site';
-      a.download = fname + '.html';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    });
-
-    // quick sample on first load
-    (function firstSample(){
-      const sample = 'Barber shop in Lagos that does haircuts, shaves and braids. Friendly team, accepts walk-ins.';
-      promptEl.value = sample;
-      titleEl.value = 'Lagos Barbers';
-    })();
-
-  </script>
-</body>
-    </html>
+  </html>
