@@ -1,418 +1,446 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>WebForge — Instant Website SaaS</title>
-<meta name="description" content="WebForge — SaaS to host & sell digital products. Built for creators." />
-<!--
-  Single-file SaaS landing + mock dashboard.
-  Replace the logo.png placeholder with your own.
--->
-<style>
-  :root{
-    --bg:#0f1724;        /* page background */
-    --card:#0b1220;      /* dark card */
-    --muted:#94a3b8;
-    --accent:#6f44ff;    /* purple accent */
-    --accent-2:#0f62fe;  /* blue accent */
-    --white:#e6eef8;
-    --glass: rgba(255,255,255,0.04);
-    --radius:14px;
-    --shadow: 0 10px 30px rgba(2,6,23,0.6);
-    --maxw:1100px;
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background:linear-gradient(180deg,#061026 0%, #071226 60%);color:var(--white);-webkit-font-smoothing:antialiased}
-  a{color:inherit}
-  .wrap{max-width:var(--maxw);margin:28px auto;padding:20px}
-  header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .logo{
-    width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:18px;box-shadow:var(--shadow)
-  }
-  .brand h1{margin:0;font-size:18px}
-  nav{display:flex;gap:12px;align-items:center}
-  .nav-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 12px;border-radius:10px;color:var(--white);cursor:pointer}
-  .hero{display:grid;grid-template-columns:1fr 420px;gap:22px;align-items:start}
-  .card{background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.04)}
-  h2{margin:0 0 10px 0}
-  p.lead{color:var(--muted);margin:0 0 16px 0}
-  .cta-row{display:flex;gap:12px;align-items:center}
-  .btn{background:var(--accent);color:white;padding:12px 16px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
-  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
-  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-  .feature{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:10px}
-  .muted{color:var(--muted)}
-  .small{font-size:13px;color:var(--muted)}
-  /* right column preview */
-  .preview-window{height:540px;overflow:hidden;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg,#061526,#071a36);display:flex;flex-direction:column}
-  .preview-top{padding:14px;display:flex;gap:12px;align-items:center}
-  .preview-site{flex:1;padding:16px}
-  .preview-fake{background:linear-gradient(135deg,rgba(255,255,255,0.02),transparent);border-radius:8px;padding:12px;min-height:320px;color:var(--muted)}
-  /* pricing */
-  .pricing{display:flex;gap:12px;margin-top:18px}
-  .price{flex:1;padding:16px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent)}
-  footer{margin-top:30px;text-align:center;color:var(--muted);font-size:13px}
-  /* forms / dashboard */
-  .form-row{display:flex;gap:10px}
-  input,textarea,select{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:10px;color:var(--white);outline:none;width:100%}
-  textarea{min-height:110px;resize:vertical}
-  .field-label{font-size:13px;margin-bottom:6px;color:var(--muted);display:block}
-  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .hidden{display:none}
-  /* dashboard layout */
-  .dashboard{display:flex;gap:16px}
-  .sidebar{width:280px;padding:14px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);border-radius:12px}
-  .main{flex:1;padding:14px}
-  .nav-item{padding:10px;border-radius:8px;cursor:pointer;color:var(--muted);margin-bottom:6px}
-  .nav-item.active{background:linear-gradient(90deg, rgba(111,68,255,0.12), rgba(15,98,254,0.06));color:var(--white);font-weight:700}
-  table{width:100%;border-collapse:collapse}
-  th,td{padding:10px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.03);font-size:14px}
-  .badge{padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.04);font-weight:700}
-  /* red indicator for errors */
-  .error{border-color:#ff6b6b !important;box-shadow:0 0 0 4px rgba(255,107,107,0.06) !important}
-  .error-message{color:#ff8a8a;font-size:13px;margin-top:6px}
-  /* small screens */
-  @media (max-width:980px){
-    .hero{grid-template-columns:1fr}
-    .preview-window{height:380px}
-    .features{grid-template-columns:repeat(2,1fr)}
-    .pricing{flex-direction:column}
-    .sidebar{display:none}
-    .dashboard{flex-direction:column}
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WebForge — Instant Website Generator</title>
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --panel:#ffffff;
+      --muted:#6b7280;
+      --accent:#0f62fe;
+      --text:#0f1724;
+      --radius:12px;
+      --shadow: 0 8px 30px rgba(15,23,36,0.06);
+      --error:#ff4d4f;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; padding:28px;}
+    .wrap{max-width:1120px;margin:0 auto;}
+    header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+    .logo{background:linear-gradient(135deg,#0f62fe,#7c3aed);color:#fff;padding:10px 14px;border-radius:10px;font-weight:700}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:4px 0 0;color:var(--muted);font-size:13px}
+    .grid{display:grid;grid-template-columns:420px 1fr;gap:18px;align-items:start}
+    .card{background:var(--panel);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}
+    input[type="text"], input[type="email"], input[type="tel"], textarea, select{
+      width:100%; padding:10px 12px;border:1px solid #e6e9ef;border-radius:10px;font-size:14px;
+      outline:none;transition:all .12s;background:#fff;color:var(--text)
+    }
+    textarea{min-height:84px; resize:vertical}
+    .row{display:flex;gap:10px}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+    .btn.ghost{background:#fff;border:1px solid #e6e9ef;color:var(--text);font-weight:600}
+    .btn.reset{background:#fff;border:1px solid #ddd;color:var(--muted)}
+    .muted{color:var(--muted);font-size:13px}
+    .preview{border-radius:10px;height:580px;overflow:hidden;border:1px solid #eee;padding:0;background:#fff;display:flex;flex-direction:column}
+    .previewTop{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #f1f3f7}
+    .previewFrame{flex:1}
+    .controls{display:flex;gap:8px;align-items:center}
+    .small{padding:8px 10px;font-size:13px}
+    .field-note{font-size:12px;color:var(--muted);margin-top:6px}
+    .error{border-color:var(--error) !important; box-shadow:0 0 0 3px rgba(255,77,79,0.06);}
+    .err-text{color:var(--error);font-size:13px;margin-top:8px}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    @media (max-width:980px){
+      .grid{grid-template-columns:1fr;}
+      .preview{height:420px}
+    }
+  </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <div class="brand">
-        <div class="logo">WF</div>
-        <div>
-          <h1>WebForge</h1>
-          <div class="small muted">Instant website SaaS for creators</div>
-        </div>
+      <div class="logo">WebForge</div>
+      <div>
+        <h1>WebForge — Instant Website Generator</h1>
+        <p class="lead">Type the business details and click Generate. Preview appears below; you can download the final HTML.</p>
       </div>
-
-      <nav>
-        <button class="nav-btn" id="open-signup">Start Free</button>
-        <button class="nav-btn" id="open-login">Login</button>
-      </nav>
     </header>
 
-    <!-- HERO -->
-    <section class="hero">
+    <div class="grid">
+      <!-- left: inputs -->
       <div class="card">
-        <h2>Build, sell & deliver digital products — effortlessly</h2>
-        <p class="lead">WebForge makes it simple for creators to sell digital goods globally. No coding, no hosting setup — create, upload, and earn.</p>
+        <label>Business Name *</label>
+        <input id="bizName" placeholder="Example: Tailoring Shop">
+        <div style="height:10px"></div>
 
-        <div class="cta-row">
-          <button class="btn" id="cta-start">Start Free</button>
-          <button class="btn ghost" id="cta-demo">View Demo</button>
+        <div class="row">
+          <div style="flex:1">
+            <label>Email</label>
+            <input id="bizEmail" type="email" placeholder="e.g. hello@example.com">
+          </div>
+          <div style="width:140px">
+            <label>Phone</label>
+            <input id="bizPhone" type="tel" placeholder="e.g. +1 555 1234">
+          </div>
         </div>
+        <div style="height:10px"></div>
 
-        <div class="features" aria-hidden="false">
-          <div class="feature"><strong>Auto Delivery</strong><div class="small muted">Instant downloads after purchase</div></div>
-          <div class="feature"><strong>Global Payments</strong><div class="small muted">Multiple currencies supported</div></div>
-          <div class="feature"><strong>Analytics</strong><div class="small muted">Track revenue & customers</div></div>
-          <div class="feature"><strong>Custom Branding</strong><div class="small muted">Add your logo & colors</div></div>
-          <div class="feature"><strong>No-Code</strong><div class="small muted">Manage from phone or computer</div></div>
-          <div class="feature"><strong>Secure Storage</strong><div class="small muted">Encrypted and backed up</div></div>
-        </div>
+        <label>Business Address</label>
+        <input id="bizAddress" placeholder="City, State, Country (e.g. New York, USA)">
 
-        <div style="margin-top:18px" class="small muted">Questions? <a href="#contact" style="color:var(--accent);text-decoration:none">Contact us</a></div>
+        <div style="height:10px"></div>
+
+        <label>Service Offered (short)</label>
+        <input id="bizService" placeholder="e.g. Sewing, Alterations, Custom designs">
+
+        <div style="height:10px"></div>
+
+        <label>Business Description</label>
+        <textarea id="bizDesc" placeholder="Describe the business in 1–2 sentences"></textarea>
+
+        <div style="height:10px"></div>
+
+        <label>Tagline / Slogan</label>
+        <input id="bizTag" placeholder="Short tagline (optional)">
+
+        <div style="height:10px"></div>
+
+        <label>Highlights (comma separated)</label>
+        <input id="bizHighlights" placeholder="Fast delivery, Custom designs, Affordable">
+
+        <div style="height:10px"></div>
+
+        <label>Website / Social Link (optional)</label>
+        <input id="bizLink" placeholder="https://instagram.com/yourpage">
+
+        <div style="height:10px"></div>
+
+        <label>Working Hours (optional)</label>
+        <input id="bizHours" placeholder="Mon - Sat 08:00 - 17:00">
+
         <div style="height:12px"></div>
 
-        <div class="card" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);margin-top:14px">
-          <div style="display:flex;gap:12px;align-items:center">
-            <div style="width:54px;height:54px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:800">C</div>
-            <div>
-              <div style="font-weight:700">Creator-first platform</div>
-              <div class="small muted">Designed to fit creators who want fast results</div>
-            </div>
-          </div>
+        <label>Upload Logo (optional)</label>
+        <input id="bizLogo" type="file" accept="image/*">
+        <div class="field-note">If you upload a small logo it will be embedded into the generated website.</div>
 
-          <div style="margin-top:12px">
-            <div class="small muted">Try this sample prompt in the generator:</div>
-            <div style="margin-top:8px;display:flex;gap:8px">
-              <input id="samplePrompt" value="Tailoring shop — tailoring & custom clothes" style="flex:1" />
-              <button class="btn ghost" id="usePrompt">Use</button>
-            </div>
-          </div>
+        <div style="height:14px"></div>
+
+        <div style="display:flex;gap:10px;align-items:center">
+          <button id="generateBtn" class="btn">Generate</button>
+          <button id="resetBtn" class="btn reset">Reset</button>
+          <div id="status" style="margin-left:8px" class="muted"></div>
         </div>
+
+        <div id="errorBox" style="margin-top:12px"></div>
 
       </div>
 
-      <!-- RIGHT PREVIEW -->
-      <aside class="preview-window">
-        <div class="preview-top">
-          <div style="display:flex;gap:12px;align-items:center">
-            <div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:800">WF</div>
-            <div>
-              <div style="font-weight:700">Live Preview</div>
-              <div class="small muted">What your generated site will roughly look like</div>
-            </div>
+      <!-- right: preview -->
+      <div class="card preview" aria-live="polite">
+        <div class="previewTop">
+          <div>
+            <strong>Live Preview</strong>
+            <div class="field-note">The preview is the website users will see. Use Generate to update it.</div>
           </div>
-          <div style="margin-left:auto" class="small muted">Status: <span id="previewStatus" style="color:var(--accent);font-weight:700">Ready</span></div>
-        </div>
-
-        <div class="preview-site" id="previewSite">
-          <div class="preview-fake" id="previewFake">
-            <h3 style="margin-top:0">Tailoring shop</h3>
-            <p class="small muted">Sewing stylish clothes — contact: <strong id="previewEmail">[email]</strong> · <span id="previewPhone">[phone]</span></p>
-            <div style="height:12px"></div>
-            <div style="display:flex;gap:8px;margin-top:6px">
-              <div style="flex:1;background:#071930;padding:10px;border-radius:8px">About: <div class="small muted" id="previewDesc">[business description]</div></div>
-              <div style="width:180px;background:#071930;padding:10px;border-radius:8px">Services: <div class="small muted" id="previewServices">Sewing, Alterations</div></div>
-            </div>
+          <div class="controls">
+            <button id="downloadBtn" class="btn small" style="display:none">Download HTML</button>
           </div>
         </div>
-
-        <div style="padding:14px;border-top:1px solid rgba(255,255,255,0.02);display:flex;gap:8px">
-          <button class="btn ghost" id="resetPreview">Reset</button>
-          <button class="btn" id="generateCode">Generate Website</button>
+        <div id="previewFrame" class="previewFrame">
+          <div style="padding:28px;color:var(--muted)">No preview yet. Fill the fields and click <strong>Generate</strong>.</div>
         </div>
-      </aside>
+      </div>
+    </div>
+
+    <footer>Built with ❤️ by WebForge — Paste this file to your GitHub Pages to run the generator.</footer>
+  </div>
+
+  <script>
+    // elements
+    const bizName = document.getElementById('bizName');
+    const bizEmail = document.getElementById('bizEmail');
+    const bizPhone = document.getElementById('bizPhone');
+    const bizAddress = document.getElementById('bizAddress');
+    const bizService = document.getElementById('bizService');
+    const bizDesc = document.getElementById('bizDesc');
+    const bizTag = document.getElementById('bizTag');
+    const bizHighlights = document.getElementById('bizHighlights');
+    const bizLink = document.getElementById('bizLink');
+    const bizHours = document.getElementById('bizHours');
+    const bizLogo = document.getElementById('bizLogo');
+
+    const generateBtn = document.getElementById('generateBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const previewFrame = document.getElementById('previewFrame');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const status = document.getElementById('status');
+    const errorBox = document.getElementById('errorBox');
+
+    // utility: clear error visuals
+    function clearErrors(){
+      [bizName, bizEmail, bizPhone].forEach(el => el.classList.remove('error'));
+      errorBox.innerHTML = '';
+    }
+
+    // validation: require name and (email or phone)
+    function validate(){
+      clearErrors();
+      const name = bizName.value.trim();
+      const email = bizEmail.value.trim();
+      const phone = bizPhone.value.trim();
+      const errors = [];
+      if(!name){
+        bizName.classList.add('error');
+        errors.push('Business name is required.');
+      }
+      if(!email && !phone){
+        bizEmail.classList.add('error');
+        bizPhone.classList.add('error');
+        errors.push('Provide at least one contact method: Email or Phone.');
+      }
+      return { ok: errors.length===0, errors };
+    }
+
+    // read logo file and return Promise of dataURL or null
+    function readLogoFile(){
+      const f = bizLogo.files && bizLogo.files[0];
+      if(!f) return Promise.resolve(null);
+      return new Promise((resolve) => {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result);
+        r.onerror = () => resolve(null);
+        r.readAsDataURL(f);
+      });
+    }
+
+    // escape HTML
+    function esc(s){ return String(s||'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]); }
+
+    // build website HTML string
+    function buildHtml(data){
+      const {
+        name,email,phone,address,service,desc,tag,highlights,link,hours,logoData
+      } = data;
+      const accent = '#0f62fe';
+      const highlightItems = (highlights||'').split(',').map(s=>s.trim()).filter(Boolean).slice(0,5);
+      const highlightHtml = highlightItems.length ? `<ul>${highlightItems.map(h=>`<li>${esc(h)}</li>`).join('')}</ul>` : '';
+      const contactHtml = `
+        <p>
+          ${email ? `<a href="mailto:${esc(email)}">${esc(email)}</a>` : ''}
+          ${email && phone ? ' · ' : ''}
+          ${phone ? `<a href="tel:${esc(phone)}">${esc(phone)}</a>` : ''}
+        </p>
+      `;
+
+      const logoImg = logoData ? `<img src="${logoData}" alt="${esc(name)} logo" style="height:56px;border-radius:8px;object-fit:contain">` : `<div style="width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#0f62fe,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">${esc(name.charAt(0)||'W')}</div>`;
+
+      // main page template
+      return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>${esc(name)}</title>
+<meta name="description" content="${esc(desc || tag || name)}" />
+<style>
+  :root{--accent:${accent};--text:#0f1724}
+  body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;background:#f7f8fb;color:var(--text)}
+  header{background:linear-gradient(90deg,var(--accent),#7c3aed);color:#fff;padding:28px 18px}
+  .wrap{max-width:960px;margin:0 auto;padding:22px}
+  .brand{display:flex;gap:14px;align-items:center}
+  h1{margin:0;font-size:24px}
+  .lead{margin:8px 0 0;opacity:.95}
+  .card{background:#fff;border-radius:12px;padding:18px;margin-top:18px;box-shadow:0 8px 30px rgba(15,23,36,0.06)}
+  .grid{display:flex;gap:18px;flex-wrap:wrap}
+  .col{flex:1;min-width:220px}
+  .muted{color:#6b7280}
+  a{color:var(--accent);text-decoration:none}
+  .hero{display:flex;justify-content:space-between;gap:12px;align-items:center}
+  ul{padding-left:18px}
+  footer{margin-top:22px;padding:12px;text-align:center;color:#6b7280}
+  @media(max-width:720px){.hero{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="brand">
+        <div style="display:flex;align-items:center">${logoImg}</div>
+        <div>
+          <h1>${esc(name)}</h1>
+          <div style="margin-top:6px;color:#fff;opacity:.95">${esc(tag || '')}</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="card hero">
+      <div style="flex:1">
+        <h2 style="margin:0">${esc(service || 'Our Services')}</h2>
+        <p class="muted" style="margin-top:6px">${esc(desc || '')}</p>
+        <div style="margin-top:12px">${contactHtml}${address?`<p class="muted">${esc(address)}</p>`:''}</div>
+        ${link?`<p style="margin-top:8px"><a href="${esc(link)}" target="_blank" rel="noopener">Visit our page</a></p>`:''}
+      </div>
+      <div style="min-width:220px">
+        <div style="background:#fafafa;padding:12px;border-radius:10px">
+          <strong>Working Hours</strong>
+          <p class="muted" style="margin-top:8px">${esc(hours || 'Mon - Sat 08:00 - 17:00')}</p>
+        </div>
+      </div>
     </section>
 
-    <!-- PRICING & CTA -->
-    <section style="margin-top:20px">
-      <div class="pricing">
-        <div class="price card">
-          <div class="small muted">Free</div>
-          <div style="font-size:20px;font-weight:800">$0<span class="small muted"> / month</span></div>
-          <ul class="small muted">
-            <li>10 product uploads</li>
-            <li>Auto delivery</li>
-            <li>Basic analytics</li>
+    <section class="card" id="services">
+      <h3>Services</h3>
+      <div class="grid">
+        <div class="col">
+          <p class="muted">${esc(service || 'We provide great services for our customers.')}</p>
+          ${highlightHtml}
+        </div>
+        <div class="col">
+          <p class="muted">Why choose us?</p>
+          <ul>
+            <li>Trusted · Experienced</li>
+            <li>Quality & fast delivery</li>
+            <li>Affordable pricing</li>
           </ul>
-          <div style="margin-top:10px"><button class="btn ghost" id="chooseFree">Start Free</button></div>
-        </div>
-        <div class="price card">
-          <div class="small muted">Premium</div>
-          <div style="font-size:20px;font-weight:800">$19<span class="small muted"> / month</span></div>
-          <ul class="small muted">
-            <li>Unlimited uploads</li>
-            <li>Custom branding</li>
-            <li>Full analytics + exports</li>
-          </ul>
-          <div style="margin-top:10px"><button class="btn" id="choosePremium">Upgrade</button></div>
         </div>
       </div>
     </section>
 
-    <!-- Dashboard Mock -->
-    <section style="margin-top:22px" id="dashboardSection" class="hidden">
-      <div class="dashboard">
-        <aside class="sidebar card">
-          <div style="font-weight:800;margin-bottom:8px">Dashboard</div>
-          <div class="nav-item active" data-tab="overview">Overview</div>
-          <div class="nav-item" data-tab="products">Products</div>
-          <div class="nav-item" data-tab="sales">Sales</div>
-          <div class="nav-item" data-tab="settings">Settings</div>
-          <div style="height:12px"></div>
-          <div style="font-size:13px;color:var(--muted)">Signed in as <strong id="dashUser">you@domain.com</strong></div>
-        </aside>
-
-        <main class="main card">
-          <div id="tab-overview">
-            <h3>Overview</h3>
-            <div style="display:flex;gap:10px;margin-top:10px">
-              <div style="flex:1;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:8px">
-                <div class="small muted">Total Sales</div><div style="font-weight:800;font-size:18px">$<span id="statSales">0</span></div>
-              </div>
-              <div style="flex:1;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:8px">
-                <div class="small muted">Products</div><div style="font-weight:800;font-size:18px"><span id="statProducts">0</span></div>
-              </div>
-            </div>
-            <div style="margin-top:16px">
-              <h4>Recent Activity</h4>
-              <div class="small muted" id="activityList">No activity yet</div>
-            </div>
-          </div>
-
-          <div id="tab-products" class="hidden">
-            <h3>Products</h3>
-            <div style="display:flex;gap:12px;margin-top:12px">
-              <div style="flex:1">
-                <label class="field-label">Business Name</label>
-                <input id="bizName" placeholder="Example: Tailoring shop">
-              </div>
-              <div style="width:200px">
-                <label class="field-label">Email</label>
-                <input id="bizEmail" placeholder="you@example.com" type="email">
-              </div>
-            </div>
-
-            <div style="margin-top:12px" class="grid-2">
-              <div>
-                <label class="field-label">Phone Number</label>
-                <input id="bizPhone" placeholder="080xxxxxxx or +1..." type="tel" />
-              </div>
-              <div>
-                <label class="field-label">Business Address</label>
-                <input id="bizAddress" placeholder="City, State, Country (leave blank if you want users to type their country)" />
-              </div>
-            </div>
-
-            <div style="margin-top:12px">
-              <label class="field-label">Service Offered</label>
-              <input id="bizService" placeholder="Example: Custom tailoring, Alterations" />
-            </div>
-
-            <div style="margin-top:12px">
-              <label class="field-label">Business Description</label>
-              <textarea id="bizDesc" placeholder="Short description about the business"></textarea>
-            </div>
-
-            <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
-              <button class="btn" id="saveBiz">Save Business</button>
-              <button class="btn ghost" id="addProductBtn">Add Product</button>
-            </div>
-
-            <div id="productList" style="margin-top:12px"></div>
-          </div>
-
-          <div id="tab-sales" class="hidden">
-            <h3>Sales</h3>
-            <table id="salesTable">
-              <thead><tr><th>Order</th><th>Product</th><th>Amount</th><th>Buyer</th></tr></thead>
-              <tbody><tr><td colspan="4" class="small muted">No sales yet</td></tr></tbody>
-            </table>
-          </div>
-
-          <div id="tab-settings" class="hidden">
-            <h3>Settings</h3>
-            <div class="small muted">Change your brand settings</div>
-            <div style="margin-top:12px" class="grid-2">
-              <div>
-                <label class="field-label">Site Title</label>
-                <input id="siteTitle" placeholder="Business Title">
-              </div>
-              <div>
-                <label class="field-label">Working Hours</label>
-                <input id="workingHours" placeholder="Mon-Sat 8:00-9:00">
-              </div>
-            </div>
-            <div style="margin-top:12px">
-              <label class="field-label">Upload Logo (paste image URL)</label>
-              <input id="logoUrl" placeholder="https://.../logo.png">
-            </div>
-            <div style="margin-top:12px">
-              <button class="btn" id="saveSettings">Save Settings</button>
-            </div>
-          </div>
-
-        </main>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" style="margin-top:22px">
-      <div class="card">
-        <h3>Contact Us</h3>
-        <p class="small muted">Questions or help — send a message.</p>
-        <div style="display:flex;gap:10px;margin-top:10px" class="form-row">
-          <div style="flex:1">
-            <label class="field-label">Name</label>
-            <input id="contactName" placeholder="Your name" />
-          </div>
-          <div style="width:260px">
-            <label class="field-label">Email</label>
-            <input id="contactEmail" placeholder="you@example.com" />
-          </div>
+    <section class="card" id="contact">
+      <h3>Contact</h3>
+      <div class="grid">
+        <div class="col">
+          <p class="muted">Get in touch</p>
+          ${contactHtml}
         </div>
-        <div style="margin-top:10px">
-          <label class="field-label">Message</label>
-          <textarea id="contactMessage" placeholder="How can we help?"></textarea>
-        </div>
-        <div style="margin-top:10px">
-          <button class="btn" id="sendContact">Send Message</button>
-          <div id="contactStatus" class="small muted" style="display:inline-block;margin-left:10px"></div>
+        <div class="col">
+          <p class="muted">Address</p>
+          <p>${esc(address || '—')}</p>
         </div>
       </div>
     </section>
 
     <footer>
-      © <span id="year"></span> WebForge — Built for creators · No default country is inserted anywhere.
+      &copy; ${new Date().getFullYear()} ${esc(name)} · Built with WebForge
     </footer>
   </div>
+</body>
+</html>`;
+    }
 
-  <!-- SIGNUP / LOGIN MODALS (simple client-side) -->
-  <div id="modalWrap" class="hidden" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;z-index:40">
-    <div id="modalBg" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,6,23,0.6),rgba(2,6,23,0.8));backdrop-filter: blur(4px)"></div>
-    <div id="modalCard" class="card" style="width:420px;position:relative;z-index:41">
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <div>
-          <h3 id="modalTitle">Sign up</h3>
-          <div class="small muted" id="modalSub">Create your free account</div>
-        </div>
-        <button id="closeModal" class="nav-btn">Close</button>
-      </div>
+    // update preview with iframe
+    function showInPreview(html){
+      try{
+        const blob = new Blob([html], { type:'text/html' });
+        const url = URL.createObjectURL(blob);
+        previewFrame.innerHTML = '<iframe src="'+url+'" style="width:100%;height:100%;border:0;border-radius:8px"></iframe>';
+        // revoke after some time
+        setTimeout(()=>URL.revokeObjectURL(url), 60000);
+      }catch(err){
+        previewFrame.innerHTML = `<div style="padding:20px;color:${getComputedStyle(document.documentElement).getPropertyValue('--error')};">Preview failed to load.</div>`;
+      }
+    }
 
-      <div style="margin-top:12px">
-        <label class="field-label">Name</label>
-        <input id="modalName" placeholder="Your name">
-        <label class="field-label" style="margin-top:8px">Email</label>
-        <input id="modalEmail" placeholder="you@example.com">
-        <label class="field-label" style="margin-top:8px">Phone</label>
-        <input id="modalPhone" placeholder="Optional">
-        <div id="modalError" class="error-message hidden"></div>
-        <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-          <button class="btn" id="modalAction">Create account</button>
-        </div>
-      </div>
-    </div>
-  </div>
+    // store last generated html for download
+    let lastGeneratedHtml = null;
 
-<script>
-  // Simple app state (client-side mock)
-  const state = {
-    products: [],
-    sales: [],
-    settings: { siteTitle: 'Tailoring shop', logoUrl: '', workingHours:'' },
-    user: { email: '', name: '' }
-  };
+    // generate handler
+    generateBtn.addEventListener('click', async ()=>{
+      status.textContent = '';
+      const v = validate();
+      if(!v.ok){
+        errorBox.innerHTML = `<div class="err-text">${v.errors.join(' ')}</div>`;
+        return;
+      }
+      generateBtn.disabled = true;
+      resetBtn.disabled = true;
+      generateBtn.textContent = 'Generating...';
+      status.textContent = 'Building preview...';
 
-  // helpers
-  document.getElementById('year').innerText = new Date().getFullYear();
+      const logoData = await readLogoFile();
+      const data = {
+        name: bizName.value.trim(),
+        email: bizEmail.value.trim(),
+        phone: bizPhone.value.trim(),
+        address: bizAddress.value.trim(),
+        service: bizService.value.trim(),
+        desc: bizDesc.value.trim(),
+        tag: bizTag.value.trim(),
+        highlights: bizHighlights.value.trim(),
+        link: bizLink.value.trim(),
+        hours: bizHours.value.trim(),
+        logoData
+      };
 
-  const el = id => document.getElementById(id);
-
-  // Preview quick helpers
-  function updatePreviewFromInputs(){
-    el('previewStatus').innerText = 'Ready';
-    el('previewEmail').innerText = el('bizEmail').value || '[email]';
-    el('previewPhone').innerText = el('bizPhone').value || '[phone]';
-    el('previewDesc').innerText = el('bizDesc').value || '[business description]';
-    el('previewServices').innerText = el('bizService').value || 'Services';
-  }
-
-  // Use sample prompt
-  document.getElementById('usePrompt').onclick = ()=>{
-    const v = document.getElementById('samplePrompt').value || '';
-    el('bizName').value = v.split('—')[0].trim() || v;
-    el('bizService').value = 'Custom tailoring, Alterations';
-    el('bizDesc').value = 'We create custom fashion and repairs.';
-    updatePreviewFromInputs();
-    showToast('Sample filled. Save in Products tab.');
-  };
-
-  // Tab nav for dashboard
-  document.querySelectorAll('.nav-item').forEach(item=>{
-    item.addEventListener('click', e=>{
-      document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
-      item.classList.add('active');
-      const tab = item.dataset.tab;
-      ['overview','products','sales','settings'].forEach(t=>{
-        el('tab-'+t).classList.add('hidden');
-      });
-      el('tab-'+tab).classList.remove('hidden');
+      try {
+        const html = buildHtml(data);
+        lastGeneratedHtml = html;
+        showInPreview(html);
+        downloadBtn.style.display = 'inline-flex';
+        status.textContent = 'Preview ready — you can download the HTML.';
+        errorBox.innerHTML = '';
+      } catch (err){
+        // highlight none specifically; show friendly error and mark Biz Name field
+        errorBox.innerHTML = '<div class="err-text">Failed to generate website. Please check your inputs.</div>';
+        bizName.classList.add('error');
+      } finally {
+        generateBtn.disabled = false;
+        resetBtn.disabled = false;
+        generateBtn.textContent = 'Generate';
+      }
     });
-  });
 
-  // show/hide dashboard
-  function showDa
+    // download handler
+    downloadBtn.addEventListener('click', ()=>{
+      if(!lastGeneratedHtml){
+        errorBox.innerHTML = '<div class="err-text">Nothing to download — generate first.</div>';
+        return;
+      }
+      const blob = new Blob([lastGeneratedHtml], { type: 'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      const fname = (bizName.value.trim() || 'site').toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9\-]/gi,'') + '.html';
+      a.download = fname;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      // revoke URL after a moment
+      setTimeout(()=>URL.revokeObjectURL(a.href), 30000);
+      status.textContent = 'Downloaded ✔';
+    });
+
+    // reset
+    resetBtn.addEventListener('click', ()=>{
+      if(confirm('Reset the form?')){
+        [bizName,bizEmail,bizPhone,bizAddress,bizService,bizDesc,bizTag,bizHighlights,bizLink,bizHours].forEach(i=>i.value='');
+        bizLogo.value = '';
+        clearErrors();
+        previewFrame.innerHTML = '<div style="padding:28px;color:var(--muted)">No preview yet. Fill the fields and click <strong>Generate</strong>.</div>';
+        downloadBtn.style.display = 'none';
+        lastGeneratedHtml = null;
+        status.textContent = '';
+        errorBox.innerHTML = '';
+      }
+    });
+
+    // small UX: clear error on input
+    [bizName,bizEmail,bizPhone].forEach(el => el.addEventListener('input', ()=> {
+      el.classList.remove('error');
+      errorBox.innerHTML = '';
+    }));
+
+    // optional: sample values to help testing (comment out if you want empty)
+    (function sample(){
+      bizName.value = 'Tailoring Shop';
+      bizEmail.value = 'coderinnovator@gmail.com';
+      bizPhone.value = '';
+      bizAddress.value = '';
+      bizService.value = 'Sew different kind of clothes';
+      bizDesc.value = 'We sew different and latest fashion — bespoke designs and alterations.';
+      bizTag.value = 'Oya wear latest';
+      bizHighlights.value = 'Fast turnaround,Custom designs,Affordable';
+      bizLink.value = '';
+      bizHours.value = 'Mon - Sat 08:00 - 17:00';
+    })();
+
+  </script>
+</body>
+          </html>
