@@ -1,186 +1,418 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebForge Generator</title>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>WebForge — Instant Website SaaS</title>
+<meta name="description" content="WebForge — SaaS to host & sell digital products. Built for creators." />
+<!--
+  Single-file SaaS landing + mock dashboard.
+  Replace the logo.png placeholder with your own.
+-->
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    padding: 20px;
-}
-.container {
-    max-width: 600px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-}
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    margin-top: 10px;
-    border-radius: 6px;
-    background: black;
-    color: white;
-    font-size: 18px;
-}
-#preview-logo {
-    width: 100px;
-    margin-top: 10px;
-    display: none;
-    border-radius: 6px;
-}
-#resultBox {
-    margin-top: 20px;
-    white-space: pre-wrap;
-    background: #222;
-    color: #0f0;
-    padding: 15px;
-    border-radius: 8px;
-}
+  :root{
+    --bg:#0f1724;        /* page background */
+    --card:#0b1220;      /* dark card */
+    --muted:#94a3b8;
+    --accent:#6f44ff;    /* purple accent */
+    --accent-2:#0f62fe;  /* blue accent */
+    --white:#e6eef8;
+    --glass: rgba(255,255,255,0.04);
+    --radius:14px;
+    --shadow: 0 10px 30px rgba(2,6,23,0.6);
+    --maxw:1100px;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,#061026 0%, #071226 60%);color:var(--white);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:var(--maxw);margin:28px auto;padding:20px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{
+    width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:18px;box-shadow:var(--shadow)
+  }
+  .brand h1{margin:0;font-size:18px}
+  nav{display:flex;gap:12px;align-items:center}
+  .nav-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 12px;border-radius:10px;color:var(--white);cursor:pointer}
+  .hero{display:grid;grid-template-columns:1fr 420px;gap:22px;align-items:start}
+  .card{background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.04)}
+  h2{margin:0 0 10px 0}
+  p.lead{color:var(--muted);margin:0 0 16px 0}
+  .cta-row{display:flex;gap:12px;align-items:center}
+  .btn{background:var(--accent);color:white;padding:12px 16px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+  .feature{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:10px}
+  .muted{color:var(--muted)}
+  .small{font-size:13px;color:var(--muted)}
+  /* right column preview */
+  .preview-window{height:540px;overflow:hidden;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg,#061526,#071a36);display:flex;flex-direction:column}
+  .preview-top{padding:14px;display:flex;gap:12px;align-items:center}
+  .preview-site{flex:1;padding:16px}
+  .preview-fake{background:linear-gradient(135deg,rgba(255,255,255,0.02),transparent);border-radius:8px;padding:12px;min-height:320px;color:var(--muted)}
+  /* pricing */
+  .pricing{display:flex;gap:12px;margin-top:18px}
+  .price{flex:1;padding:16px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent)}
+  footer{margin-top:30px;text-align:center;color:var(--muted);font-size:13px}
+  /* forms / dashboard */
+  .form-row{display:flex;gap:10px}
+  input,textarea,select{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:10px;color:var(--white);outline:none;width:100%}
+  textarea{min-height:110px;resize:vertical}
+  .field-label{font-size:13px;margin-bottom:6px;color:var(--muted);display:block}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .hidden{display:none}
+  /* dashboard layout */
+  .dashboard{display:flex;gap:16px}
+  .sidebar{width:280px;padding:14px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);border-radius:12px}
+  .main{flex:1;padding:14px}
+  .nav-item{padding:10px;border-radius:8px;cursor:pointer;color:var(--muted);margin-bottom:6px}
+  .nav-item.active{background:linear-gradient(90deg, rgba(111,68,255,0.12), rgba(15,98,254,0.06));color:var(--white);font-weight:700}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:10px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.03);font-size:14px}
+  .badge{padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.04);font-weight:700}
+  /* red indicator for errors */
+  .error{border-color:#ff6b6b !important;box-shadow:0 0 0 4px rgba(255,107,107,0.06) !important}
+  .error-message{color:#ff8a8a;font-size:13px;margin-top:6px}
+  /* small screens */
+  @media (max-width:980px){
+    .hero{grid-template-columns:1fr}
+    .preview-window{height:380px}
+    .features{grid-template-columns:repeat(2,1fr)}
+    .pricing{flex-direction:column}
+    .sidebar{display:none}
+    .dashboard{flex-direction:column}
+  }
 </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">WF</div>
+        <div>
+          <h1>WebForge</h1>
+          <div class="small muted">Instant website SaaS for creators</div>
+        </div>
+      </div>
 
-<div class="container">
-    <h2>WebForge Website Generator</h2>
+      <nav>
+        <button class="nav-btn" id="open-signup">Start Free</button>
+        <button class="nav-btn" id="open-login">Login</button>
+      </nav>
+    </header>
 
-    <label>Business Name</label>
-    <input type="text" id="name">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="card">
+        <h2>Build, sell & deliver digital products — effortlessly</h2>
+        <p class="lead">WebForge makes it simple for creators to sell digital goods globally. No coding, no hosting setup — create, upload, and earn.</p>
 
-    <label>Email</label>
-    <input type="email" id="email">
+        <div class="cta-row">
+          <button class="btn" id="cta-start">Start Free</button>
+          <button class="btn ghost" id="cta-demo">View Demo</button>
+        </div>
 
-    <label>Phone Number</label>
-    <input type="text" id="phone">
+        <div class="features" aria-hidden="false">
+          <div class="feature"><strong>Auto Delivery</strong><div class="small muted">Instant downloads after purchase</div></div>
+          <div class="feature"><strong>Global Payments</strong><div class="small muted">Multiple currencies supported</div></div>
+          <div class="feature"><strong>Analytics</strong><div class="small muted">Track revenue & customers</div></div>
+          <div class="feature"><strong>Custom Branding</strong><div class="small muted">Add your logo & colors</div></div>
+          <div class="feature"><strong>No-Code</strong><div class="small muted">Manage from phone or computer</div></div>
+          <div class="feature"><strong>Secure Storage</strong><div class="small muted">Encrypted and backed up</div></div>
+        </div>
 
-    <label>Business Address</label>
-    <input type="text" id="address" placeholder="City, State, Country">
+        <div style="margin-top:18px" class="small muted">Questions? <a href="#contact" style="color:var(--accent);text-decoration:none">Contact us</a></div>
+        <div style="height:12px"></div>
 
-    <label>Service Offered</label>
-    <input type="text" id="service">
+        <div class="card" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);margin-top:14px">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="width:54px;height:54px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:800">C</div>
+            <div>
+              <div style="font-weight:700">Creator-first platform</div>
+              <div class="small muted">Designed to fit creators who want fast results</div>
+            </div>
+          </div>
 
-    <label>Business Description</label>
-    <textarea id="description"></textarea>
+          <div style="margin-top:12px">
+            <div class="small muted">Try this sample prompt in the generator:</div>
+            <div style="margin-top:8px;display:flex;gap:8px">
+              <input id="samplePrompt" value="Tailoring shop — tailoring & custom clothes" style="flex:1" />
+              <button class="btn ghost" id="usePrompt">Use</button>
+            </div>
+          </div>
+        </div>
 
-    <label>Business Tagline / Slogan</label>
-    <input type="text" id="tagline" placeholder="e.g. Fast • Reliable • Affordable">
+      </div>
 
-    <label>Highlight Service 1</label>
-    <input type="text" id="s1">
+      <!-- RIGHT PREVIEW -->
+      <aside class="preview-window">
+        <div class="preview-top">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:800">WF</div>
+            <div>
+              <div style="font-weight:700">Live Preview</div>
+              <div class="small muted">What your generated site will roughly look like</div>
+            </div>
+          </div>
+          <div style="margin-left:auto" class="small muted">Status: <span id="previewStatus" style="color:var(--accent);font-weight:700">Ready</span></div>
+        </div>
 
-    <label>Highlight Service 2</label>
-    <input type="text" id="s2">
+        <div class="preview-site" id="previewSite">
+          <div class="preview-fake" id="previewFake">
+            <h3 style="margin-top:0">Tailoring shop</h3>
+            <p class="small muted">Sewing stylish clothes — contact: <strong id="previewEmail">[email]</strong> · <span id="previewPhone">[phone]</span></p>
+            <div style="height:12px"></div>
+            <div style="display:flex;gap:8px;margin-top:6px">
+              <div style="flex:1;background:#071930;padding:10px;border-radius:8px">About: <div class="small muted" id="previewDesc">[business description]</div></div>
+              <div style="width:180px;background:#071930;padding:10px;border-radius:8px">Services: <div class="small muted" id="previewServices">Sewing, Alterations</div></div>
+            </div>
+          </div>
+        </div>
 
-    <label>Highlight Service 3</label>
-    <input type="text" id="s3">
+        <div style="padding:14px;border-top:1px solid rgba(255,255,255,0.02);display:flex;gap:8px">
+          <button class="btn ghost" id="resetPreview">Reset</button>
+          <button class="btn" id="generateCode">Generate Website</button>
+        </div>
+      </aside>
+    </section>
 
-    <label>Website / Social Link (Optional)</label>
-    <input type="text" id="social" placeholder="https://instagram.com/...">
+    <!-- PRICING & CTA -->
+    <section style="margin-top:20px">
+      <div class="pricing">
+        <div class="price card">
+          <div class="small muted">Free</div>
+          <div style="font-size:20px;font-weight:800">$0<span class="small muted"> / month</span></div>
+          <ul class="small muted">
+            <li>10 product uploads</li>
+            <li>Auto delivery</li>
+            <li>Basic analytics</li>
+          </ul>
+          <div style="margin-top:10px"><button class="btn ghost" id="chooseFree">Start Free</button></div>
+        </div>
+        <div class="price card">
+          <div class="small muted">Premium</div>
+          <div style="font-size:20px;font-weight:800">$19<span class="small muted"> / month</span></div>
+          <ul class="small muted">
+            <li>Unlimited uploads</li>
+            <li>Custom branding</li>
+            <li>Full analytics + exports</li>
+          </ul>
+          <div style="margin-top:10px"><button class="btn" id="choosePremium">Upgrade</button></div>
+        </div>
+      </div>
+    </section>
 
-    <label>Working Hours</label>
-    <input type="text" id="hours" placeholder="Mon–Fri 9am–6pm">
+    <!-- Dashboard Mock -->
+    <section style="margin-top:22px" id="dashboardSection" class="hidden">
+      <div class="dashboard">
+        <aside class="sidebar card">
+          <div style="font-weight:800;margin-bottom:8px">Dashboard</div>
+          <div class="nav-item active" data-tab="overview">Overview</div>
+          <div class="nav-item" data-tab="products">Products</div>
+          <div class="nav-item" data-tab="sales">Sales</div>
+          <div class="nav-item" data-tab="settings">Settings</div>
+          <div style="height:12px"></div>
+          <div style="font-size:13px;color:var(--muted)">Signed in as <strong id="dashUser">you@domain.com</strong></div>
+        </aside>
 
-    <label>Upload Business Logo</label>
-    <input type="file" id="logo" accept="image/*">
-    <img id="preview-logo">
+        <main class="main card">
+          <div id="tab-overview">
+            <h3>Overview</h3>
+            <div style="display:flex;gap:10px;margin-top:10px">
+              <div style="flex:1;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:8px">
+                <div class="small muted">Total Sales</div><div style="font-weight:800;font-size:18px">$<span id="statSales">0</span></div>
+              </div>
+              <div style="flex:1;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:8px">
+                <div class="small muted">Products</div><div style="font-weight:800;font-size:18px"><span id="statProducts">0</span></div>
+              </div>
+            </div>
+            <div style="margin-top:16px">
+              <h4>Recent Activity</h4>
+              <div class="small muted" id="activityList">No activity yet</div>
+            </div>
+          </div>
 
-    <button onclick="generateCode()">Generate Website Code</button>
-    <button onclick="resetForm()" style="background:red;">Reset</button>
+          <div id="tab-products" class="hidden">
+            <h3>Products</h3>
+            <div style="display:flex;gap:12px;margin-top:12px">
+              <div style="flex:1">
+                <label class="field-label">Business Name</label>
+                <input id="bizName" placeholder="Example: Tailoring shop">
+              </div>
+              <div style="width:200px">
+                <label class="field-label">Email</label>
+                <input id="bizEmail" placeholder="you@example.com" type="email">
+              </div>
+            </div>
 
-    <div id="resultBox"></div>
-</div>
+            <div style="margin-top:12px" class="grid-2">
+              <div>
+                <label class="field-label">Phone Number</label>
+                <input id="bizPhone" placeholder="080xxxxxxx or +1..." type="tel" />
+              </div>
+              <div>
+                <label class="field-label">Business Address</label>
+                <input id="bizAddress" placeholder="City, State, Country (leave blank if you want users to type their country)" />
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <label class="field-label">Service Offered</label>
+              <input id="bizService" placeholder="Example: Custom tailoring, Alterations" />
+            </div>
+
+            <div style="margin-top:12px">
+              <label class="field-label">Business Description</label>
+              <textarea id="bizDesc" placeholder="Short description about the business"></textarea>
+            </div>
+
+            <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+              <button class="btn" id="saveBiz">Save Business</button>
+              <button class="btn ghost" id="addProductBtn">Add Product</button>
+            </div>
+
+            <div id="productList" style="margin-top:12px"></div>
+          </div>
+
+          <div id="tab-sales" class="hidden">
+            <h3>Sales</h3>
+            <table id="salesTable">
+              <thead><tr><th>Order</th><th>Product</th><th>Amount</th><th>Buyer</th></tr></thead>
+              <tbody><tr><td colspan="4" class="small muted">No sales yet</td></tr></tbody>
+            </table>
+          </div>
+
+          <div id="tab-settings" class="hidden">
+            <h3>Settings</h3>
+            <div class="small muted">Change your brand settings</div>
+            <div style="margin-top:12px" class="grid-2">
+              <div>
+                <label class="field-label">Site Title</label>
+                <input id="siteTitle" placeholder="Business Title">
+              </div>
+              <div>
+                <label class="field-label">Working Hours</label>
+                <input id="workingHours" placeholder="Mon-Sat 8:00-9:00">
+              </div>
+            </div>
+            <div style="margin-top:12px">
+              <label class="field-label">Upload Logo (paste image URL)</label>
+              <input id="logoUrl" placeholder="https://.../logo.png">
+            </div>
+            <div style="margin-top:12px">
+              <button class="btn" id="saveSettings">Save Settings</button>
+            </div>
+          </div>
+
+        </main>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" style="margin-top:22px">
+      <div class="card">
+        <h3>Contact Us</h3>
+        <p class="small muted">Questions or help — send a message.</p>
+        <div style="display:flex;gap:10px;margin-top:10px" class="form-row">
+          <div style="flex:1">
+            <label class="field-label">Name</label>
+            <input id="contactName" placeholder="Your name" />
+          </div>
+          <div style="width:260px">
+            <label class="field-label">Email</label>
+            <input id="contactEmail" placeholder="you@example.com" />
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <label class="field-label">Message</label>
+          <textarea id="contactMessage" placeholder="How can we help?"></textarea>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" id="sendContact">Send Message</button>
+          <div id="contactStatus" class="small muted" style="display:inline-block;margin-left:10px"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> WebForge — Built for creators · No default country is inserted anywhere.
+    </footer>
+  </div>
+
+  <!-- SIGNUP / LOGIN MODALS (simple client-side) -->
+  <div id="modalWrap" class="hidden" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;z-index:40">
+    <div id="modalBg" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,6,23,0.6),rgba(2,6,23,0.8));backdrop-filter: blur(4px)"></div>
+    <div id="modalCard" class="card" style="width:420px;position:relative;z-index:41">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <h3 id="modalTitle">Sign up</h3>
+          <div class="small muted" id="modalSub">Create your free account</div>
+        </div>
+        <button id="closeModal" class="nav-btn">Close</button>
+      </div>
+
+      <div style="margin-top:12px">
+        <label class="field-label">Name</label>
+        <input id="modalName" placeholder="Your name">
+        <label class="field-label" style="margin-top:8px">Email</label>
+        <input id="modalEmail" placeholder="you@example.com">
+        <label class="field-label" style="margin-top:8px">Phone</label>
+        <input id="modalPhone" placeholder="Optional">
+        <div id="modalError" class="error-message hidden"></div>
+        <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+          <button class="btn" id="modalAction">Create account</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script>
-let logoBase64 = "";
+  // Simple app state (client-side mock)
+  const state = {
+    products: [],
+    sales: [],
+    settings: { siteTitle: 'Tailoring shop', logoUrl: '', workingHours:'' },
+    user: { email: '', name: '' }
+  };
 
-document.getElementById("logo").addEventListener("change", function() {
-    let reader = new FileReader();
-    reader.onload = function(e) {
-        logoBase64 = e.target.result;
-        let img = document.getElementById("preview-logo");
-        img.style.display = "block";
-        img.src = logoBase64;
-    };
-    reader.readAsDataURL(this.files[0]);
-});
+  // helpers
+  document.getElementById('year').innerText = new Date().getFullYear();
 
-function generateCode() {
-    let name = document.getElementById("name").value;
-    let email = document.getElementById("email").value;
-    let phone = document.getElementById("phone").value;
-    let address = document.getElementById("address").value;
-    let service = document.getElementById("service").value;
-    let desc = document.getElementById("description").value;
-    let tagline = document.getElementById("tagline").value;
-    let s1 = document.getElementById("s1").value;
-    let s2 = document.getElementById("s2").value;
-    let s3 = document.getElementById("s3").value;
-    let social = document.getElementById("social").value;
-    let hours = document.getElementById("hours").value;
+  const el = id => document.getElementById(id);
 
-    let output = `
-<!DOCTYPE html>
-<html>
-<head>
-<title>${name}</title>
-<style>
-body { font-family: Arial; padding: 20px; }
-.logo { width: 120px; border-radius: 6px; margin-bottom: 20px; }
-.box { background:#f7f7f7; padding:20px; border-radius:10px; }
-</style>
-</head>
-<body>
+  // Preview quick helpers
+  function updatePreviewFromInputs(){
+    el('previewStatus').innerText = 'Ready';
+    el('previewEmail').innerText = el('bizEmail').value || '[email]';
+    el('previewPhone').innerText = el('bizPhone').value || '[phone]';
+    el('previewDesc').innerText = el('bizDesc').value || '[business description]';
+    el('previewServices').innerText = el('bizService').value || 'Services';
+  }
 
-${logoBase64 ? `<img src="${logoBase64}" class="logo">` : ''}
+  // Use sample prompt
+  document.getElementById('usePrompt').onclick = ()=>{
+    const v = document.getElementById('samplePrompt').value || '';
+    el('bizName').value = v.split('—')[0].trim() || v;
+    el('bizService').value = 'Custom tailoring, Alterations';
+    el('bizDesc').value = 'We create custom fashion and repairs.';
+    updatePreviewFromInputs();
+    showToast('Sample filled. Save in Products tab.');
+  };
 
-<h1>${name}</h1>
-<h3>${tagline}</h3>
+  // Tab nav for dashboard
+  document.querySelectorAll('.nav-item').forEach(item=>{
+    item.addEventListener('click', e=>{
+      document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+      item.classList.add('active');
+      const tab = item.dataset.tab;
+      ['overview','products','sales','settings'].forEach(t=>{
+        el('tab-'+t).classList.add('hidden');
+      });
+      el('tab-'+tab).classList.remove('hidden');
+    });
+  });
 
-<div class="box">
-<p><strong>Email:</strong> ${email}</p>
-<p><strong>Phone:</strong> ${phone}</p>
-<p><strong>Address:</strong> ${address}</p>
-<p><strong>Service:</strong> ${service}</p>
-<p><strong>Description:</strong> ${desc}</p>
-
-<h3>Our Key Services</h3>
-<ul>
-<li>${s1}</li>
-<li>${s2}</li>
-<li>${s3}</li>
-</ul>
-
-<p><strong>Working Hours:</strong> ${hours}</p>
-
-${social ? `<p><strong>Find Us Online:</strong> <a href="${social}" target="_blank">${social}</a></p>` : ""}
-</div>
-
-</body>
-</html>
-`;
-
-    document.getElementById("resultBox").textContent = output;
-}
-
-function resetForm() {
-    document.querySelector("form")?.reset();
-    document.getElementById("preview-logo").style.display = "none";
-    document.getElementById("resultBox").textContent = "";
-}
-</script>
-
-</body>
-</html>
+  // show/hide dashboard
+  function showDa
